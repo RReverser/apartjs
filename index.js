@@ -56,6 +56,9 @@ var RefCollector = recast.Visitor.extend({
 
 	visitMemberExpression: function (member) {
 		this.visit(member.object);
+		if (member.computed) {
+			this.visit(member.property);
+		}
 	}
 });
 
