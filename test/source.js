@@ -7,6 +7,12 @@ for (var i = 0; i < array.length; i++) apart:{
 		mul *= num;
 	}
 	result[i] = mul;
+
+	(function (abc) {
+		var x = abc + mul + array[0];
+	})(smth);
+
+	var a = {x:smthelse};
 }
 
 console.log(result);
