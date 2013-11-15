@@ -1,0 +1,28 @@
+{
+  "name": "apartjs",
+  "version": "0.1.0",
+  "description": "Easy parallellism for client-side JavaScript.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@bitbucket.org/rreverser/apartjs.git"
+  },
+  "keywords": [
+    "parallel",
+    "execution",
+    "flow",
+    "workers",
+    "threads"
+  ],
+  "author": "Ingvar Stepanyan <me@rreverser.com>",
+  "license": "MIT",
+  "dependencies": {
+    "recast": "~0.4.24"
+  }
+}
