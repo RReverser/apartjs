@@ -13,6 +13,9 @@ for (var i = 0; i < array.length; i++) apart:{
 	})(smth);
 
 	var a = {x:smthelse};
+
+	var b = window.obj.prop1 + window.obj.prop2;
+	window.obj.method();
 }
 
 console.log(result);

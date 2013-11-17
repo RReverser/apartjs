@@ -13,12 +13,14 @@ function apart_task_0($extref) {
 	})($extref[6]);
 
     var a = {x: $extref[7]};
+    var b = $extref[8].obj.prop1 + $extref[8].obj.prop2;
+    $extref[8].obj.method();
 }
 
 var array = [1, 2, 3, 4],
 	result = new Array(array.length);
 
 for (var i = 0; i < array.length; i++)
-    apart_task_0(JSON.stringify([array, i, j, num, mul, result, smth, smthelse]));
+    apart_task_0(JSON.stringify([array, i, j, num, mul, result, smth, smthelse, window]));
 
 console.log(result);
