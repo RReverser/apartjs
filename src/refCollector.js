@@ -10,7 +10,14 @@ var RefCollector = module.exports = recast.Visitor.extend({
 	},
 
 	declare: function (decl) {
-		this.decls[decl.name] = decl;
+		this.decls[decl.name] = true;
+	},
+
+	reference: function (parentRef, name, asn, onStaticResult) {
+		if (parentRef.isUsed) return;
+
+		var ref = parentRef.getSub(name, [asn]);
+		onStaticResult ? onStaticResult.call(this, ref) : ref.isUsed = true;
 	},
 
 	visitFunctionDeclaration: function (func) {
@@ -36,17 +43,19 @@ var RefCollector = module.exports = recast.Visitor.extend({
 
 		refCollector.visit(func.body);
 
-		refCollector.refTree.each(function (name) {
-			if (name in refCollector.decls) delete refCollector.refTree.subTree[name];
-		});
-
-		refCollector.refTree.traverse(function (name, destParent) {
+		refCollector.refTree
+		.each(function (ref) {
+			if (ref.name in refCollector.decls) {
+				this.removeSub(ref.name);
+			}
+		})
+		.traverse(function (ref, destParent) {
 			if (destParent.isUsed) return;
 
-			var copy = destParent.getSub(name, this.asnList);
+			var copy = destParent.getSub(ref.name, ref.asnList);
 
-			if (this.isUsed) {
-				copy.use();
+			if (ref.isUsed) {
+				copy.isUsed = true;
 			}
 
 			return copy;
@@ -59,13 +68,6 @@ var RefCollector = module.exports = recast.Visitor.extend({
 
 	visitProperty: function (prop) {
 		this.visit(prop.value);
-	},
-
-	reference: function (parentRef, name, asn, onStaticResult) {
-		if (parentRef.isUsed) return;
-
-		var ref = parentRef.getSub(name, [asn]);
-		onStaticResult ? onStaticResult.call(this, ref) : ref.use();
 	},
 
 	visitIdentifier: function (id, onStaticResult) {

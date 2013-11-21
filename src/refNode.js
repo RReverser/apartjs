@@ -1,4 +1,5 @@
-function RefNode(asnList) {
+function RefNode(name, asnList) {
+	this.name = name || '';
 	this.asnList = asnList || [];
 	this.subTree = Object.create(null);
 }
@@ -7,35 +8,45 @@ RefNode.prototype = {
 	get isUsed() {
 		return this.subTree === null;
 	},
-	use: function () {
-		this.subTree = null;
-		return this;
+
+	set isUsed(isUsed) {
+		this.subTree = isUsed ? null : (this.subTree || Object.create(null));
 	},
+
 	addASNs: function (asnList) {
 		if (asnList) {
 			this.asnList = this.asnList.concat(asnList);
 		}
 		return this;
 	},
+
 	getSub: function (name, asnList) {
 		if (name in this.subTree) {
 			return this.subTree[name].addASNs(asnList);
 		} else {
-			return this.subTree[name] = new RefNode(asnList);
+			return this.subTree[name] = new RefNode(name, asnList);
 		}
 	},
+
+	removeSub: function (name) {
+		delete this.subTree[name];
+	},
+
 	traverse: function (callback, parentResult) {
-		this.each(function (name) {
-			this.traverse(callback, callback.call(this, name, parentResult));
+		return this.each(function (ref) {
+			ref.traverse(callback, callback.call(this, ref, parentResult));
 		});
 	},
-	each: function (callback) {
-		if (this.isUsed) return;
 
-		for (var name in this.subTree) {
-			callback.call(this.subTree[name], name);
+	each: function (callback) {
+		if (!this.isUsed) {
+			for (var name in this.subTree) {
+				callback.call(this, this.subTree[name]);
+			}
 		}
+		return this;
 	},
+
 	toASN: function () {
 		return (function copy(src) {
 			if (src !== null && typeof src === 'object') {

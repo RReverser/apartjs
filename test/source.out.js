@@ -1,23 +1,23 @@
-function apart_task_0($extref) {
-    $extref = JSON.parse($extref);
-    var num = $extref[0][$extref[1]], mul = 1;
+function apart_task_0($extRef) {
+    $extRef = JSON.parse($extRef);
+    var num = $extRef[0][$extRef[1]], mul = 1;
 
     for (var j = 1; j < num; j++) {
 		mul *= num;
 	}
 
-    $extref[2][$extref[1]] = mul;
+    $extRef[2][$extRef[1]] = mul;
 
     (function f(abc) {
-		var x = abc + mul + $extref[0][0] - f.length;
-	})($extref[3]);
+		var x = abc + mul + $extRef[0][0] - f.length;
+	})($extRef[3]);
 
-    var a = {x: $extref[4]};
-    var b = $extref[5] + $extref[6];
-    var bb = $extref[5] + $extref[6];
-    var obj = $extref[8];
-    var c = $extref[8].prop1 + $extref[8].prop2;
-    $extref[7](obj);
+    var a = {x: $extRef[4]};
+    var b = $extRef[5] + $extRef[6];
+    var bb = $extRef[5] + $extRef[6];
+    var obj = $extRef[8];
+    var c = $extRef[8].prop1 + $extRef[8].prop2;
+    $extRef[7](obj);
 }
 
 var array = [1, 2, 3, 4],
