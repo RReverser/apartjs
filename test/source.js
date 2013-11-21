@@ -8,14 +8,16 @@ for (var i = 0; i < array.length; i++) apart:{
 	}
 	result[i] = mul;
 
-	(function (abc) {
-		var x = abc + mul + array[0];
+	(function f(abc) {
+		var x = abc + mul + array[0] - f.length;
 	})(smth);
 
 	var a = {x:smthelse};
 
-	var b = window.obj.prop1 + window.obj.prop2;
-	window.obj.method();
+	var b = window.obj1.prop1 + window.obj1.prop2;
+	var obj = window.obj2;
+	var c = window.obj2.prop1 + window.obj2.prop2;
+	window.obj1.method(obj);
 }
 
 console.log(result);
