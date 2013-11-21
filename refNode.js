@@ -29,17 +29,6 @@ RefNode.prototype = {
 			this.traverse(callback, callback.call(this, name, parentResult));
 		});
 	},
-	importRefs: function (refTree) {
-		refTree.traverse(function (name, parent) {
-			if (parent.isUsed) return;
-
-			var copy = parent.getSub(name, this.asnList);
-			if (this.isUsed) {
-				copy.use();
-			}
-			return copy;
-		}, this);
-	},
 	each: function (callback) {
 		if (this.isUsed) return;
 

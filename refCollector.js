@@ -36,7 +36,21 @@ var RefCollector = module.exports = recast.Visitor.extend({
 
 		refCollector.visit(func.body);
 
-		this.refTree.importRefs(refCollector.refTree);
+		refCollector.refTree.each(function (name) {
+			if (name in refCollector.decls) delete refCollector.refTree.subTree[name];
+		});
+
+		refCollector.refTree.traverse(function (name, destParent) {
+			if (destParent.isUsed) return;
+
+			var copy = destParent.getSub(name, this.asnList);
+
+			if (this.isUsed) {
+				copy.use();
+			}
+
+			return copy;
+		}, this.refTree);
 	},
 
 	visitLabeledStatement: function (stmt) {
