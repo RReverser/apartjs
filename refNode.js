@@ -25,14 +25,14 @@ RefNode.prototype = {
 		}
 	},
 	traverse: function (callback, parentResult) {
-		if (this.isUsed) return;
-
 		this.each(function (name) {
 			this.traverse(callback, callback.call(this, name, parentResult));
 		});
 	},
 	importRefs: function (refTree) {
 		refTree.traverse(function (name, parent) {
+			if (parent.isUsed) return;
+
 			var copy = parent.getSub(name, this.asnList);
 			if (this.isUsed) {
 				copy.use();
@@ -41,6 +41,8 @@ RefNode.prototype = {
 		}, this);
 	},
 	each: function (callback) {
+		if (this.isUsed) return;
+
 		for (var name in this.subTree) {
 			callback.call(this.subTree[name], name);
 		}

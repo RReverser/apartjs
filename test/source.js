@@ -15,6 +15,7 @@ for (var i = 0; i < array.length; i++) apart:{
 	var a = {x:smthelse};
 
 	var b = window.obj1.prop1 + window.obj1.prop2;
+	var bb = window.obj1['prop1'] + window.obj1['prop2'];
 	var obj = window.obj2;
 	var c = window.obj2.prop1 + window.obj2.prop2;
 	window.obj1.method(obj);
