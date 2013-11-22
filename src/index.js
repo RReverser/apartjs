@@ -10,11 +10,11 @@ var ast = recast.parse(fs.readFileSync(__dirname + '/../test/source.js'));
 
 console.log('Analyzing and transformation in progress...');
 
-var apartVisitor = new ApartTransformer();
-apartVisitor.visit(ast);
+var apartTransformer = new ApartTransformer();
+apartTransformer.visit(ast);
 
-ast.program.body = apartVisitor.tasks.concat(ast.program.body);
+ast.program.body = apartTransformer.tasks.concat(ast.program.body);
 
-fs.writeFileSync(__dirname + '/../test/source.out.js', recast.print(ast));
+fs.writeFileSync(__dirname + '/../test/source.out.js', recast.print(ast, {useTabs: true}));
 
 console.log('Finished.');
