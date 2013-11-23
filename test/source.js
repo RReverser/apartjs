@@ -18,7 +18,14 @@ for (var i = 0; i < array.length; i++) apart:{
 	var bb = window.obj1['prop1'] + window.obj1['prop2'];
 	var obj = window.obj2;
 	var c = window.obj2.prop1 + window.obj2.prop2;
-	window.obj1.method(obj);
+
+	try {
+		window.obj1.method(obj);
+	} catch (e) {
+		var exception = e;
+	}
+
+	var e2 = exception || e;
 
 	var outerContext = this, outerProp = this.prop;
 }

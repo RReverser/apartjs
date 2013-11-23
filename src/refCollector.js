@@ -9,24 +9,20 @@ var RefCollector = module.exports = recast.Visitor.extend({
 		this.decls = Object.create(parent ? parent.decls : null);
 	},
 
-	declare: function (decl) {
-		this.decls[decl.name] = true;
-	},
-
 	reference: function (parentRef, name, asn, onStaticResult) {
-		if (parentRef.isUsed) return;
+		if (parentRef.isUsed || (parentRef === this.refTree && this.decls[name])) return;
 
 		var ref = parentRef.getSub(name, [asn]);
 		onStaticResult ? onStaticResult.call(this, ref) : ref.isUsed = true;
 	},
 
 	visitFunctionDeclaration: function (func) {
-		this.declare(func.id);
+		this.decls[func.id.name] = true;
 		this.visitFunctionExpression(func);
 	},
 
 	visitVariableDeclarator: function (decl) {
-		this.declare(decl.id);
+		this.decls[decl.id.name] = true;
 		this.visit(decl.init);
 	},
 
@@ -34,18 +30,18 @@ var RefCollector = module.exports = recast.Visitor.extend({
 		var refCollector = new RefCollector(this);
 
 		if (func.id) {
-			refCollector.declare(func.id);
+			refCollector.decls[func.id.name] = true;
 		}
 
 		func.params.forEach(function (param) {
-			refCollector.declare(param);
+			refCollector.decls[param.name] = true;
 		});
 
 		refCollector.visit(func.body);
 
 		refCollector.refTree
 		.each(function (ref) {
-			if (ref.name in refCollector.decls) {
+			if (refCollector.decls[ref.name]) {
 				this.removeSub(ref.name);
 			}
 		})
@@ -60,6 +56,22 @@ var RefCollector = module.exports = recast.Visitor.extend({
 
 			return copy;
 		}, this.refTree);
+	},
+
+	visitTryStatement: function (stmt) {
+		this.visit(stmt.block);
+
+		stmt.handlers.forEach(function (handler) {
+			var
+				name = handler.param.name,
+				wasNameDeclared = this.decls[name]
+			;
+			this.decls[name] = true;
+			this.visit(handler.body);
+			this.decls[name] = wasNameDeclared;
+		}, this);
+
+		this.visit(stmt.finalizer);
 	},
 
 	visitLabeledStatement: function (stmt) {
