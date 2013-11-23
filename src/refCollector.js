@@ -37,8 +37,6 @@ var RefCollector = module.exports = recast.Visitor.extend({
 			refCollector.decls[param.name] = true;
 		});
 
-		refCollector.visit(func.body);
-
 		refCollector.refTree
 		.each(function (ref) {
 			if (refCollector.decls[ref.name]) {
@@ -82,15 +80,6 @@ var RefCollector = module.exports = recast.Visitor.extend({
 		this.visit(prop.value);
 	},
 
-	visitThisExpression: function (expr, onStaticResult) {
-		this.reference(
-			this.refTree,
-			'this',
-			expr,
-			onStaticResult
-		);
-	},
-
 	visitIdentifier: function (id, onStaticResult) {
 		this.reference(
 			this.refTree,
@@ -108,7 +97,6 @@ var RefCollector = module.exports = recast.Visitor.extend({
 			switch (member.object.type) {
 				case 'MemberExpression':
 				case 'Identifier':
-				case 'ThisExpression':
 					this['visit' + member.object.type](member.object, function (staticParent) {
 						this.reference(
 							staticParent,
