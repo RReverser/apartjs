@@ -18,12 +18,13 @@ function apart_task_0($extRef) {
 	var obj = $extRef[8];
 	var c = $extRef[8].prop1 + $extRef[8].prop2;
 	$extRef[7](obj);
+	var outerContext = $extRef[9], outerProp = $extRef[9].prop;
 }
 
 var array = [1, 2, 3, 4],
 	result = new Array(array.length);
 
 for (var i = 0; i < array.length; i++)
-    apart_task_0(JSON.stringify([array, i, result, smth, smthelse, window.obj1.prop1, window.obj1.prop2, window.obj1.method, window.obj2]));
+    apart_task_0(JSON.stringify([array, i, result, smth, smthelse, window.obj1.prop1, window.obj1.prop2, window.obj1.method, window.obj2, this]));
 
 console.log(result);

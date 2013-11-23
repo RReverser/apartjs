@@ -70,6 +70,15 @@ var RefCollector = module.exports = recast.Visitor.extend({
 		this.visit(prop.value);
 	},
 
+	visitThisExpression: function (expr, onStaticResult) {
+		this.reference(
+			this.refTree,
+			'this',
+			expr,
+			onStaticResult
+		);
+	},
+
 	visitIdentifier: function (id, onStaticResult) {
 		this.reference(
 			this.refTree,
@@ -83,18 +92,24 @@ var RefCollector = module.exports = recast.Visitor.extend({
 		if (member.computed && member.property.type !== 'Literal') {
 			this.visit(member.object);
 			this.visit(member.property);
-		} else
-		if (member.object.type === 'MemberExpression' || member.object.type === 'Identifier') {
-			this['visit' + member.object.type](member.object, function (staticParent) {
-				this.reference(
-					staticParent,
-					member.property.type === 'Literal' ? String(member.property.value) : member.property.name,
-					member,
-					onStaticResult
-				);
-			});
 		} else {
-			this.visit(member.object);
+			switch (member.object.type) {
+				case 'MemberExpression':
+				case 'Identifier':
+				case 'ThisExpression':
+					this['visit' + member.object.type](member.object, function (staticParent) {
+						this.reference(
+							staticParent,
+							member.property.type === 'Literal' ? String(member.property.value) : member.property.name,
+							member,
+							onStaticResult
+						);
+					});
+					break;
+
+				default:
+					this.visit(member.object);
+			}
 		}
 	}
 });

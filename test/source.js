@@ -19,6 +19,8 @@ for (var i = 0; i < array.length; i++) apart:{
 	var obj = window.obj2;
 	var c = window.obj2.prop1 + window.obj2.prop2;
 	window.obj1.method(obj);
+
+	var outerContext = this, outerProp = this.prop;
 }
 
 console.log(result);
