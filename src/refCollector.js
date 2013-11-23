@@ -37,6 +37,8 @@ var RefCollector = module.exports = recast.Visitor.extend({
 			refCollector.decls[param.name] = true;
 		});
 
+		refCollector.visit(func.body);
+
 		refCollector.refTree
 		.each(function (ref) {
 			if (refCollector.decls[ref.name]) {

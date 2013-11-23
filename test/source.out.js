@@ -25,13 +25,13 @@ function apart_task_0($extRef) {
 	}
 
 	var e2 = exception || $extRef[9];
-	var outerContext = $extRef[10], outerProp = $extRef[10].prop;
+	var outerContext = this, outerProp = this.prop;
 }
 
 var array = [1, 2, 3, 4],
 	result = new Array(array.length);
 
 for (var i = 0; i < array.length; i++)
-    apart_task_0(JSON.stringify([array, i, result, smth, smthelse, window.obj1.prop1, window.obj1.prop2, window.obj1.method, window.obj2, e, this]));
+    apart_task_0(JSON.stringify([array, i, result, smth, smthelse, window.obj1.prop1, window.obj1.prop2, window.obj1.method, window.obj2, e]));
 
 console.log(result);
