@@ -23,6 +23,6 @@
   "author": "Ingvar Stepanyan <me@rreverser.com>",
   "license": "MIT",
   "dependencies": {
-    "recast": "~0.4.24"
+    "recast": "^0.5.16"
   }
 }

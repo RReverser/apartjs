@@ -15,6 +15,6 @@ apartTransformer.visit(ast);
 
 ast.program.body = apartTransformer.tasks.concat(ast.program.body);
 
-fs.writeFileSync(__dirname + '/../test/source.out.js', recast.print(ast, {useTabs: true}));
+fs.writeFileSync(__dirname + '/../test/source.out.js', recast.print(ast, {useTabs: true}).code);
 
 console.log('Finished.');

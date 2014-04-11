@@ -1,6 +1,6 @@
 var
 	recast = require('recast'),
-	b = recast.builders,
+	b = recast.types.builders,
 	RefCollector = require('./refCollector'),
 	jsonParseExpr = b.memberExpression(b.identifier('JSON'), b.identifier('parse'), false),
 	jsonStringifyExpr = b.memberExpression(b.identifier('JSON'), b.identifier('stringify'), false),

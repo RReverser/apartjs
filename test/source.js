@@ -20,6 +20,7 @@ for (var i = 0; i < array.length; i++) apart:{
 	var c = window.obj2.prop1 + window.obj2.prop2;
 
 	try {
+		var argCount = window.obj1.method.length;
 		window.obj1.method(obj);
 	} catch (e) {
 		var exception = e;

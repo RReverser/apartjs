@@ -1,5 +1,6 @@
 var
 	recast = require('recast'),
+	b = recast.types.builders,
 	RefNode = require('./refNode')
 ;
 
@@ -113,5 +114,15 @@ var RefCollector = module.exports = recast.Visitor.extend({
 					this.visit(member.object);
 			}
 		}
+	},
+
+	visitCallExpression: function (expr) {
+		this.genericVisit(expr);
+
+		return b.callExpression(b.identifier('postMessage'), [b.objectExpression([
+			b.property('init', b.identifier('type'), b.literal('call')),
+			b.property('init', b.identifier('callee'), b.memberExpression(expr.callee, b.identifier('id'), false)),
+			b.property('init', b.identifier('arguments'), b.arrayExpression(expr.arguments))
+		])]);
 	}
 });

@@ -8,9 +8,15 @@ function apart_task_0($extRef) {
 
 	$extRef[2][$extRef[1]] = mul;
 
-	(function f(abc) {
-		var x = abc + mul + $extRef[0][0] - f.length;
-	})($extRef[3]);
+	postMessage({
+	    type: "call",
+
+	    callee: function f(abc) {
+			var x = abc + mul + $extRef[0][0] - f.length;
+		}.id,
+
+	    arguments: [$extRef[3]]
+	});
 
 	var a = {x: $extRef[4]};
 	var b = $extRef[5] + $extRef[6];
@@ -19,7 +25,12 @@ function apart_task_0($extRef) {
 	var c = $extRef[8].prop1 + $extRef[8].prop2;
 
 	try {
-		$extRef[7](obj);
+		var argCount = $extRef[7].length;
+		postMessage({
+		    type: "call",
+		    callee: $extRef[7].id,
+		    arguments: [obj]
+		});
 	} catch (e) {
 		var exception = e;
 	}
